@@ -1,2 +1,3 @@
 # g
- a small generative art language
+
+a small generative art language

@@ -1,15 +1,14 @@
 [package]
-name = "g_c"
-description = "The G language compiler."
-version = "0.0.0"
+name = "gcli"
+description = "G language CLI tool."
+version = "0.1.0"
 authors = ["EthanJustice <47954690+EthanJustice@users.noreply.github.com>"]
 edition = "2018"
-readme = "README.md"
+readme = "../README.md"
 homepage = "https://github.com/EthanJustice/g"
 repository = "https://github.com/EthanJustice/g"
 license = "MIT"
 publish = false
 
 [dependencies]
-pest = "~2.1.3"
-pest_derive = "~2.1.0"
+clap = { version = "~2.33.3", features = ["suggestions", "color"] }
