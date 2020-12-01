@@ -1,1 +1,12 @@
-field = { (ASCII_DIGIT | "." | "-")+ }
+operation = _{ add | subtract | multiply | divide | divide_with_remainder | exponent | radical }
+    add                   = { "+" }
+    subtract              = { "-" }
+    multiply              = { "*" }
+    divide                = { "/" }
+    divide_with_remainder = { "%" }
+    exponent              = { "**" }
+    radical               = { "*/*" }
+
+number = { ASCII_DIGIT+ }
+
+expression = { number ~ operation ~ number }
