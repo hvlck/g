@@ -59,4 +59,11 @@ mod tests {
         println!("let: {:?}", variable);
         assert!(variable.is_ok());
     }
+
+    #[test]
+    fn test_use_statement() {
+        let use_with_std = GParser::parse(Rule::import_pkg, "use \"math\"");
+        println!("Use: {:?}", use_with_std);
+        assert!(use_with_std.is_ok());
+    }
 }

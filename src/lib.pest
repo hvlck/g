@@ -2,6 +2,9 @@
 number = @{ ASCII_DIGIT+ }
 string = { ASCII+ }
 
+// umbrella (any) type
+any_type = { number | string }
+
 // operations
 operation = @{ add | subtract | multiply | divide | divide_with_remainder | exponent | radical }
     add                   = { "+" }
@@ -18,4 +21,9 @@ expression = { number ~ operation ~ number }
 valid_variable_name = { ASCII_ALPHA+ ~ "_"? ~ ASCII_ALPHA+ }
 
 // variable declarations
-let_variable = { "let " ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ (number) }
+let_variable = { "let " ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ (any_type) }
+
+const_variable = { "const" ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ (any_type) }
+
+// modules
+import_pkg = { "use " ~ string }
