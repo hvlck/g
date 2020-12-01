@@ -1,3 +1,8 @@
+// types
+number = @{ ASCII_DIGIT+ }
+string = { ASCII+ }
+
+// operations
 operation = @{ add | subtract | multiply | divide | divide_with_remainder | exponent | radical }
     add                   = { "+" }
     subtract              = { "-" }
@@ -7,9 +12,10 @@ operation = @{ add | subtract | multiply | divide | divide_with_remainder | expo
     exponent              = { "**" }
     radical               = { "*/*" }
 
-number = @{ ASCII_DIGIT+ }
-
 expression = { number ~ operation ~ number }
 
+// variable validation
 valid_variable_name = { ASCII_ALPHA+ ~ "_"? ~ ASCII_ALPHA+ }
+
+// variable declarations
 let_variable = { "let " ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ (number) }
