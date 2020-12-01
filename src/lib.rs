@@ -80,4 +80,17 @@ mod tests {
         println!("Use: {:?}", use_with_std);
         assert!(use_with_std.is_ok());
     }
+
+    #[test]
+    fn test_internal_comment() {
+        let valid_comment =
+            GParser::parse(Rule::internal_comment, "// This is a generic comment. //");
+        assert!(valid_comment.is_ok());
+    }
+
+    #[test]
+    fn test_process_comment() {
+        let valid_comment = GParser::parse(Rule::process_comment, "/// Add 2 to 2 ///");
+        assert!(valid_comment.is_ok());
+    }
 }

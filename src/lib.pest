@@ -35,3 +35,12 @@ const_variable = { "const " ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ any_type
 
 // modules
 import_pkg = { "use " ~ string }
+
+// comments
+
+// comment is only used for documenting code
+without_forward_slashes = { ASCII_DIGIT+ | ASCII_ALPHA+ | "!"+ | "@"+ | "#"+ | "$"+ | "%"+ | "^"+ | "&"+ | "+"+ | "("+ | ")"+ | "|"+ | "."+ | ","+ | " "+ }
+end_of_comment = { NEWLINE | "//" | "///" }
+internal_comment = { "// " ~ without_forward_slashes+ ~ end_of_comment }
+
+process_comment = { "/// " ~ without_forward_slashes+ ~ end_of_comment }
