@@ -38,9 +38,15 @@ import_pkg = { "use " ~ string }
 
 // comments
 
-// comment is only used for documenting code
-without_forward_slashes = { ASCII_DIGIT+ | ASCII_ALPHA+ | "!"+ | "@"+ | "#"+ | "$"+ | "%"+ | "^"+ | "&"+ | "+"+ | "("+ | ")"+ | "|"+ | "."+ | ","+ | " "+ }
+inner_without_slashes = @{ char_without_slashes* }
+char_without_slashes = {
+    !("//" | "//") ~ ANY
+    | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
+    | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
+}
 end_of_comment = { NEWLINE | "//" | "///" }
-internal_comment = { "// " ~ without_forward_slashes+ ~ end_of_comment }
 
-process_comment = { "/// " ~ without_forward_slashes+ ~ end_of_comment }
+// comment is only used for documenting code
+internal_comment = { "// " ~ inner_without_slashes }
+process_comment = { "/// " ~ inner_without_slashes ~ end_of_comment }
+doc_comment = { "//!" ~ inner_without_slashes ~ end_of_comment }
