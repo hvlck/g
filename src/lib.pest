@@ -1,4 +1,4 @@
-operation = _{ add | subtract | multiply | divide | divide_with_remainder | exponent | radical }
+operation = @{ add | subtract | multiply | divide | divide_with_remainder | exponent | radical }
     add                   = { "+" }
     subtract              = { "-" }
     multiply              = { "*" }
@@ -7,6 +7,9 @@ operation = _{ add | subtract | multiply | divide | divide_with_remainder | expo
     exponent              = { "**" }
     radical               = { "*/*" }
 
-number = { ASCII_DIGIT+ }
+number = @{ ASCII_DIGIT+ }
 
 expression = { number ~ operation ~ number }
+
+valid_variable_name = { ASCII_ALPHA+ ~ "_"? ~ ASCII_ALPHA+ }
+let_variable = { "let " ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ (number) }
