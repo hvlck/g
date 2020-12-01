@@ -48,15 +48,29 @@ mod tests {
 
     #[test]
     fn test_valid_variable_names() {
-        let test = GParser::parse(Rule::valid_variable_name, "generic_name");
+        let test = GParser::parse(Rule::valid_variable_name, "generic_age");
         println!("Valid variable name: {:?}", test);
         assert!(test.is_ok());
     }
 
     #[test]
     fn test_let_variable() {
-        let variable = GParser::parse(Rule::let_variable, "let generic_name = 22");
+        let variable = GParser::parse(Rule::let_variable, "let generic_age = 22");
         println!("let: {:?}", variable);
+        assert!(variable.is_ok());
+    }
+
+    #[test]
+    fn test_man_variable() {
+        let variable = GParser::parse(Rule::man_variable, "man \"Decay Rate\" as decay_rate = 22");
+        println!("man: {:?}", variable);
+        assert!(variable.is_ok());
+    }
+
+    #[test]
+    fn test_const_variable() {
+        let variable = GParser::parse(Rule::const_variable, "const generic_age = 22");
+        println!("const: {:?}", variable);
         assert!(variable.is_ok());
     }
 
