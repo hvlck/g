@@ -5,10 +5,17 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>g docs</title>
+        <link rel="stylesheet" type="text/css" href="../static/index.css" />
     </head>
 
     <body>
-        {{ content }}
+        <div class="index">{% for item in items %}
+            <p><a href="./{{item}}.html">{{item}}</a></p>
+            {% endfor %}
+        </div>
+        <div class="main">
+            {{ content }}
+        </div>
     </body>
 
 </html>
