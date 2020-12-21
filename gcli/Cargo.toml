@@ -1,6 +1,6 @@
 [package]
 name = "gcli"
-description = "G language CLI tool."
+description = "glang compiler"
 version = "0.1.0"
 authors = ["EthanJustice <47954690+EthanJustice@users.noreply.github.com>"]
 edition = "2018"

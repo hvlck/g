@@ -20,7 +20,7 @@ Note that this is all early drafts; as such, G may change significantly.
 
 `G lang meta.`
 
-+ [ ] compilter (`gc`)
++ [ ] compiler (`gc`)
   + [ ] build (`gc build`) - compiles G code
     + [ ] release (`gc build --release`, `gc build -r`) - compiles optimised release version of the code
       + [ ] exp - creates explanation of art creation (`///` comments)
@@ -28,8 +28,9 @@ Note that this is all early drafts; as such, G may change significantly.
   + [ ] doc (`gc doc`) - creates documentation
   + [ ] formatter (`fmt`) - single, universal code formatter
 + [ ] online playground (`play.lang.domain`)
-+ [ ] decide on file name
++ [ ] decide on file extension
 + [ ] decide on final language name
++ [ ] docs
 
 ## Compiler
 

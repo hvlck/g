@@ -30,12 +30,12 @@ fn main() {
             SubCommand::with_name("run")
                 .about("Build and run a G project.")
                 .arg(
-                    Arg::with_name("quiet")
-                        .short("q")
-                        .help("Will not open project automatically in-browser."),
+                    Arg::with_name("open")
+                        .short("open")
+                        .help("Open project in-browser automatically"),
                 ),
         )
-        .subcommand(SubCommand::with_name("doc").about("Generate documentation."))
+        .subcommand(SubCommand::with_name("doc").about("Generate documentation.").arg(Arg::with_name("open").short("o").long("open").help("Open documentation in-browser automatically.")))
         .subcommand(SubCommand::with_name("fmt").about("Format your code."))
         .settings(&[AppSettings::ColoredHelp])
         .bin_name("gc")
