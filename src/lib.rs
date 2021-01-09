@@ -16,6 +16,7 @@ use parse::*;
 #[grammar = "lib.pest"]
 pub struct GParser;
 
+/// Parses a given source (`src`) string into JavaScript.
 fn parse(src: &str) -> Result<String, PestError<Rule>> {
     let mut ast: Vec<AstNode> = Vec::new();
 
