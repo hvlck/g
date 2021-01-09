@@ -39,7 +39,7 @@ fn parse(src: &str) -> Result<String, PestError<Rule>> {
 
 fn parse_to_ast(pair: pest::iterators::Pair<Rule>) -> AstNode {
     match pair.as_rule() {
-        Rule::any => parse_to_ast(pair.into_inner().next().unwrap()),
+        Rule::any | Rule::variable => parse_to_ast(pair.into_inner().next().unwrap()),
         Rule::import_pkg => {
             let mut pair = pair.into_inner();
             let import = match pair.next() {
@@ -48,6 +48,17 @@ fn parse_to_ast(pair: pest::iterators::Pair<Rule>) -> AstNode {
             };
             let import = import.replace("\"", "");
             AstNode::Import(String::from(import))
+        }
+        Rule::man_variable => {
+            let mut pair = pair.into_inner();
+            let display = pair.next().unwrap().as_str().to_string();
+            let name = pair.next().unwrap().as_str().to_string();
+            let value = pair.next().unwrap().as_str().to_string();
+            AstNode::Variable(Variable::Man {
+                display,
+                name,
+                default: value,
+            })
         }
         _ => AstNode::Error(Error::InvalidInput),
     }
@@ -61,6 +72,16 @@ mod output_tests {
         let import = parse(r#"use "math""#);
         assert!(import.is_ok());
         assert_eq!(import.unwrap(), r#"import("./math");"#);
+    }
+
+    #[test]
+    fn test_man_variable() {
+        let var = parse(r#"man "Decay Rate" as decay_rate = 0.9"#);
+        assert!(var.is_ok());
+        assert_eq!(
+            var.unwrap(),
+            r#""decay_rate":{default:0.9,display:"Decay Rate"}"#
+        );
     }
 }
 

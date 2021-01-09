@@ -61,4 +61,4 @@ statement = { comment | variable }
 
 pattern = { "pattern" ~ valid_variable_name ~ "(" ~ (valid_variable_name ~ ",")* ~ ")" ~ "{" ~ statement* ~ "}" }
 
-any = { import_pkg | comment | valid_variable_name | pattern }
+any = { import_pkg | comment | variable | pattern }

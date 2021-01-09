@@ -36,22 +36,51 @@ impl Output for AstNode {
     fn to_output(&self) -> Result<String, Error> {
         match self {
             AstNode::Import(string) => {
-                let mut import = String::from("import(\"");
-                if string.starts_with("http") == false {
-                    let mut s = String::from("./");
-                    s.push_str(string.as_str());
-                    
-                    import.push_str(s.as_str());
-                    import.push_str("\");");
-                    
-                    Ok(import)
+                if string.len() == 0 {
+                    Err(Error::NoImport)
                 } else {
-                    import.push_str(string.as_str());
-                    import.push_str("\");");
+                    let mut import = String::from("import(\"");
+                    if string.starts_with("http") == false {
+                        let mut s = String::from("./");
+                        s.push_str(string.as_str());
 
-                    Ok(import)
+                        import.push_str(s.as_str());
+                        import.push_str("\");");
+
+                        Ok(import)
+                    } else {
+                        import.push_str(string.as_str());
+                        import.push_str("\");");
+
+                        Ok(import)
+                    }
                 }
             }
+            AstNode::Variable(var) => match var {
+                Variable::Constant { name, value } => {
+                    unimplemented!()
+                }
+                Variable::Mutable { name, value } => {
+                    unimplemented!()
+                }
+                Variable::Man {
+                    display,
+                    name,
+                    default,
+                } => {
+                    let mut out = String::from("\"");
+                    out.push_str(name);
+
+                    out.push_str("\":{default:");
+                    out.push_str(default.as_str());
+
+                    out.push_str(",display:");
+                    out.push_str(display.as_str());
+                    out.push_str("}");
+
+                    Ok(out)
+                }
+            },
             _ => unimplemented!(),
         }
     }
@@ -85,7 +114,7 @@ pub enum Variable {
     Man {
         display: String,
         name: String,
-        value: String,
+        default: String,
     },
 }
 
