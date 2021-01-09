@@ -11,8 +11,10 @@ char = _{
     | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
 }
 
+boolean = { "true" | "false" }
+
 // umbrella (any) type
-any_type = { number | string }
+any_type = { number | string | boolean | expression }
 
 // operations
 operation = @{ add | subtract | multiply | divide | modulo | exponent | root }
@@ -27,14 +29,16 @@ operation = @{ add | subtract | multiply | divide | modulo | exponent | root }
 expression = { number ~ operation ~ number }
 
 // variable validation
-valid_variable_name = { ASCII_ALPHA+ ~ "_"? ~ ASCII_ALPHA+ }
+valid_variable_name = @{ ASCII_ALPHA+ ~ ("_"? ~ ASCII_ALPHA+)* }
 
 // variable declarations
-let_variable = { "let " ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ any_type }
-man_variable = { "man " ~ string ~ " as " ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ any_type }
-const_variable = { "const " ~ valid_variable_name ~ " "? ~ "=" ~ " "? ~ any_type }
 
 variable = { let_variable | man_variable | const_variable }
+    let_variable = { "let" ~ valid_variable_name ~ "=" ~ any_type }
+    man_variable = { "man" ~ string ~ " as " ~ valid_variable_name ~ "=" ~ any_type }
+    const_variable = { "const" ~ valid_variable_name ~ "=" ~ any_type }
+
+WHITESPACE = _{ " " | "\t" }
 
 // modules
 import_pkg = { "use " ~ string }

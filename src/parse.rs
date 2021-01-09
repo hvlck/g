@@ -66,7 +66,15 @@ impl Output for AstNode {
                     unimplemented!()
                 }
                 Variable::Mutable { name, value } => {
-                    unimplemented!()
+                    let mut out = String::from("let ");
+
+                    out.push_str(name.as_str());
+                    out.push_str("=");
+
+                    out.push_str(value);
+                    out.push(';');
+
+                    Ok(out)
                 }
                 Variable::Man {
                     display,

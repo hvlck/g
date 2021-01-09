@@ -61,6 +61,12 @@ fn parse_to_ast(pair: pest::iterators::Pair<Rule>) -> AstNode {
                 default: value,
             })
         }
+        Rule::let_variable => {
+            let mut pair = pair.into_inner();
+            let name = pair.next().unwrap().as_str().to_string();
+            let value = pair.next().unwrap().as_str().to_string();
+            AstNode::Variable(Variable::Mutable { name, value })
+        }
         _ => AstNode::Error(Error::InvalidInput),
     }
 }
@@ -83,6 +89,13 @@ mod output_tests {
             var.unwrap(),
             r#""decay_rate":{default:0.9,display:"Decay Rate"}"#
         );
+    }
+
+    #[test]
+    fn test_mutable_variable() {
+        let var = parse(r#"let example_var = false"#);
+        assert!(var.is_ok());
+        assert_eq!(var.unwrap(), r#"let example_var=false;"#);
     }
 }
 
@@ -130,7 +143,7 @@ mod tests {
 
     #[test]
     fn test_man_variable() {
-        let variable = GParser::parse(Rule::man_variable, "man \"Decay Rate\" as decay_rate = 22");
+        let variable = GParser::parse(Rule::man_variable, r#"man "Decay Rate" as decay_rate = 22"#);
         assert!(variable.is_ok());
     }
 
