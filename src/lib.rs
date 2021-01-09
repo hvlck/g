@@ -2,14 +2,67 @@
 // std
 
 // external
-use pest::Parser;
+use pest::{error::Error as PestError, Parser};
 use pest_derive::*;
 
 // local
+pub mod error;
+use error::Error;
+
+pub mod parse;
+use parse::*;
 
 #[derive(Parser)]
 #[grammar = "lib.pest"]
 pub struct GParser;
+
+fn parse(src: &str) -> Result<String, PestError<Rule>> {
+    let mut ast: Vec<AstNode> = Vec::new();
+
+    let exp = GParser::parse(Rule::any, src)?;
+    for pair in exp {
+        match pair.as_rule() {
+            Rule::any => {
+                ast.push(parse_to_ast(pair));
+            }
+            _ => ast.push(AstNode::Error(Error::InvalidInput)),
+        }
+    }
+
+    let mut final_output = String::new();
+    for i in ast {
+        final_output.push_str(i.to_output().unwrap().as_str());
+    }
+
+    Ok(final_output)
+}
+
+fn parse_to_ast(pair: pest::iterators::Pair<Rule>) -> AstNode {
+    match pair.as_rule() {
+        Rule::any => parse_to_ast(pair.into_inner().next().unwrap()),
+        Rule::import_pkg => {
+            let mut pair = pair.into_inner();
+            let import = match pair.next() {
+                Some(v) => v.as_str().to_string(),
+                None => return AstNode::Error(Error::NoImport),
+            };
+            let import = import.replace("\"", "");
+            AstNode::Import(String::from(import))
+        }
+        _ => AstNode::Error(Error::InvalidInput),
+    }
+}
+
+#[cfg(test)]
+mod output_tests {
+    use super::*;
+    #[test]
+    fn test_import() {
+        let import = parse(r#"use "math""#);
+        assert!(import.is_ok());
+        assert_eq!(import.unwrap(), r#"import("./math");"#);
+    }
+}
 
 #[cfg(test)]
 mod tests {

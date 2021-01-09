@@ -8,6 +8,8 @@ use std::fmt;
 #[derive(Debug, Clone, PartialEq)]
 pub enum Error {
     Other(String),
+    InvalidInput,
+    NoImport,
 }
 
 impl std::fmt::Display for Error {
