@@ -61,11 +61,22 @@ fn parse_to_ast(pair: pest::iterators::Pair<Rule>) -> AstNode {
                 default: value,
             })
         }
-        Rule::let_variable => {
+        Rule::let_variable | Rule::const_variable => {
+            let t = if pair.as_rule() == Rule::const_variable {
+                true
+            } else {
+                false
+            };
+
             let mut pair = pair.into_inner();
             let name = pair.next().unwrap().as_str().to_string();
             let value = pair.next().unwrap().as_str().to_string();
-            AstNode::Variable(Variable::Mutable { name, value })
+
+            if t == true {
+                AstNode::Variable(Variable::Constant { name, value })
+            } else {
+                AstNode::Variable(Variable::Mutable { name, value })
+            }
         }
         _ => AstNode::Error(Error::InvalidInput),
     }
@@ -96,6 +107,13 @@ mod output_tests {
         let var = parse(r#"let example_var = false"#);
         assert!(var.is_ok());
         assert_eq!(var.unwrap(), r#"let example_var=false;"#);
+    }
+
+    #[test]
+    fn test_immutable_variable() {
+        let var = parse(r#"const example_var = false"#);
+        assert!(var.is_ok());
+        assert_eq!(var.unwrap(), r#"const example_var=false;"#);
     }
 }
 

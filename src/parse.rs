@@ -63,7 +63,15 @@ impl Output for AstNode {
             }
             AstNode::Variable(var) => match var {
                 Variable::Constant { name, value } => {
-                    unimplemented!()
+                    let mut out = String::from("const ");
+
+                    out.push_str(name.as_str());
+                    out.push_str("=");
+
+                    out.push_str(value);
+                    out.push(';');
+
+                    Ok(out)
                 }
                 Variable::Mutable { name, value } => {
                     let mut out = String::from("let ");
